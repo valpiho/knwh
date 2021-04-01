@@ -9,7 +9,6 @@ class KnwhApplicationTests {
 
     @Test
     void contextLoads() {
-        Assertions.fail("Oooops test failed, hello");
     }
 
 }
