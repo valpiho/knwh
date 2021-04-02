@@ -9,9 +9,9 @@ on:
 env:
   # Postgres
   POSTGRESQL_VERSION: 13.2
-  POSTGRESQL_DB: amigoscode
+  POSTGRESQL_DB: knwh
   POSTGRESQL_USER: postgres
-  POSTGRESQL_PASSWORD: Matrix12
+  POSTGRESQL_PASSWORD: password
   # Java
   JAVA_VERSION: 1.11
   # DockerHub
