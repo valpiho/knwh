@@ -11,15 +11,15 @@ env:
   POSTGRESQL_VERSION: 13.2
   POSTGRESQL_DB: amigoscode
   POSTGRESQL_USER: postgres
-  POSTGRESQL_PASSWORD: password
+  POSTGRESQL_PASSWORD: Matrix12
   # Java
   JAVA_VERSION: 1.11
   # DockerHub
   DOCKER_HUB_USERNAME: piboxtln
   # AWS & Elastic Bean Stalk
-  AWS_REGION: eu-west-1
-  EB_ENVIRONMENT_NAME: Springbootreactfullstack-env
-  EB_APPLICATION_NAME: springboot-react-fullstack
+  AWS_REGION: eu-north-1
+  EB_ENVIRONMENT_NAME: Knwh-env
+  EB_APPLICATION_NAME: knwh
   EB_DEPLOYMENT_PACKAGE: elasticbeanstalk/docker-compose.yml
 
 jobs:
