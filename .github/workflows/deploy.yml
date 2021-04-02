@@ -62,8 +62,8 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
       - name: Wrapper permissions
-          run: |
-            chmod +x ./mvnw
+        run: |
+          chmod +x ./mvnw
       - name: Maven Clean Package and Push to Dockerhub
         run: |
           ./mvnw --no-transfer-progress clean package \
