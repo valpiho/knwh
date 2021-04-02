@@ -26,8 +26,6 @@ public class Person {
     @Column(nullable = false)
     private String name;
 
-    private String lol;
-
     @Email
     @Column(nullable = false, unique = true)
     private String email;
