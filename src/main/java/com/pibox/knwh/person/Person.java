@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table
 public class Person {
-// Some comments
+
     @Id
     @SequenceGenerator(name = "student_sequence", sequenceName = "student_sequence", allocationSize = 1)
     @GeneratedValue(generator = "student_sequence", strategy = GenerationType.SEQUENCE)
