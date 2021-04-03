@@ -18,7 +18,7 @@ env:
   DOCKER_HUB_USERNAME: piboxtln
   # AWS & Elastic Bean Stalk
   AWS_REGION: eu-central-1
-  EB_ENVIRONMENT_NAME: Knwh-env
+  EB_ENVIRONMENT_NAME: Knwh-env-1
   EB_APPLICATION_NAME: knwh
   EB_DEPLOYMENT_PACKAGE: elasticbeanstalk/docker-compose.yml
 
@@ -112,7 +112,7 @@ jobs:
         with:
           status: ${{ job.status }}
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-          text: ':tada: :arrow_right: Knwh-env.eba-xp6vcmee.eu-north-1.elasticbeanstalk.com'
+          text: ':tada: :arrow_right: Knwh-env-1.eba-3p62tgpr.eu-central-1.elasticbeanstalk.com'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         if: always()
