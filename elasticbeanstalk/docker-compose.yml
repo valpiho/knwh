@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   backend:
-    image: "piboxtln/knwh:3.4.2021.21.20.24"
+    image: "piboxtln/knwh:3.4.2021.21.25.4"
     ports:
     - "80:8080"
     restart: "always"
