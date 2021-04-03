@@ -17,7 +17,7 @@ env:
   # DockerHub
   DOCKER_HUB_USERNAME: piboxtln
   # AWS & Elastic Bean Stalk
-  AWS_REGION: eu-north-1
+  AWS_REGION: eu-central-1
   EB_ENVIRONMENT_NAME: Knwh-env
   EB_APPLICATION_NAME: knwh
   EB_DEPLOYMENT_PACKAGE: elasticbeanstalk/docker-compose.yml
