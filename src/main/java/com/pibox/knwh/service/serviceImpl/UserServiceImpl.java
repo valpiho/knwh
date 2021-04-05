@@ -1,6 +1,6 @@
 package com.pibox.knwh.service.serviceImpl;
 
-import com.pibox.knwh.entity.Person;
+import com.pibox.knwh.entity.User;
 import com.pibox.knwh.exception.BadRequestException;
 import com.pibox.knwh.exception.PersonNotFoundException;
 import com.pibox.knwh.repository.PersonRepository;
@@ -16,18 +16,18 @@ public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository personRepository;
 
-    public List<Person> getAllPeople() {
+    public List<User> getAllPeople() {
         return personRepository.findAll();
     }
 
-    public void addPerson(Person person) {
-        Boolean existsEmail = personRepository.selectExistsEmail(person.getEmail());
+    public void addPerson(User user) {
+        Boolean existsEmail = personRepository.selectExistsEmail(user.getEmail());
         if (existsEmail) {
             throw new BadRequestException(
-                    "Email " + person.getEmail() + " taken"
+                    "Email " + user.getEmail() + " taken"
             );
         }
-        personRepository.save(person);
+        personRepository.save(user);
     }
 
     public void deletePerson(Long personId) {
