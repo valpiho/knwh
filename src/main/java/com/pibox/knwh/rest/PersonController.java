@@ -1,5 +1,7 @@
-package com.pibox.knwh.person;
+package com.pibox.knwh.rest;
 
+import com.pibox.knwh.entity.Person;
+import com.pibox.knwh.service.PersonService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

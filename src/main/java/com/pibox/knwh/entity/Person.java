@@ -1,5 +1,6 @@
-package com.pibox.knwh.person;
+package com.pibox.knwh.entity;
 
+import com.pibox.knwh.enumeration.Gender;
 import lombok.*;
 
 import javax.persistence.*;

@@ -1,7 +1,10 @@
-package com.pibox.knwh.person;
+package com.pibox.knwh.service.serviceImpl;
 
-import com.pibox.knwh.person.exception.BadRequestException;
-import com.pibox.knwh.person.exception.PersonNotFoundException;
+import com.pibox.knwh.entity.Person;
+import com.pibox.knwh.exception.BadRequestException;
+import com.pibox.knwh.exception.PersonNotFoundException;
+import com.pibox.knwh.repository.PersonRepository;
+import com.pibox.knwh.service.PersonService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +12,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Service
-public class PersonService {
+public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository personRepository;
 
