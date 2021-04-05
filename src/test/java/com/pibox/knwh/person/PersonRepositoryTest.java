@@ -1,5 +1,8 @@
 package com.pibox.knwh.person;
 
+import com.pibox.knwh.entity.Person;
+import com.pibox.knwh.enumeration.Gender;
+import com.pibox.knwh.repository.PersonRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,9 @@
 package com.pibox.knwh.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pibox.knwh.person.Gender;
-import com.pibox.knwh.person.Person;
-import com.pibox.knwh.person.PersonRepository;
+import com.pibox.knwh.enumeration.Gender;
+import com.pibox.knwh.entity.Person;
+import com.pibox.knwh.repository.PersonRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

@@ -1,5 +1,6 @@
-package com.pibox.knwh.person;
+package com.pibox.knwh.repository;
 
+import com.pibox.knwh.entity.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

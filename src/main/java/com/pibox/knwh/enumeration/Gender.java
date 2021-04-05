@@ -1,4 +1,4 @@
-package com.pibox.knwh.person;
+package com.pibox.knwh.enumeration;
 
 public enum Gender {
 

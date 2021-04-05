@@ -1,7 +1,11 @@
 package com.pibox.knwh.person;
 
-import com.pibox.knwh.person.exception.BadRequestException;
-import com.pibox.knwh.person.exception.PersonNotFoundException;
+import com.pibox.knwh.entity.Person;
+import com.pibox.knwh.enumeration.Gender;
+import com.pibox.knwh.exception.BadRequestException;
+import com.pibox.knwh.exception.PersonNotFoundException;
+import com.pibox.knwh.repository.PersonRepository;
+import com.pibox.knwh.service.serviceImpl.PersonServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,18 +17,17 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class PersonServiceTest {
+class PersonServiceImplTest {
 
     @Mock private PersonRepository personRepository;
-    private PersonService underTest;
+    private PersonServiceImpl underTest;
 
     @BeforeEach
     void setUp() {
-        underTest = new PersonService(personRepository);
+        underTest = new PersonServiceImpl(personRepository);
     }
 
 
