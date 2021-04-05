@@ -2,9 +2,9 @@ package com.pibox.knwh.service.serviceImpl;
 
 import com.pibox.knwh.entity.User;
 import com.pibox.knwh.exception.BadRequestException;
-import com.pibox.knwh.exception.PersonNotFoundException;
-import com.pibox.knwh.repository.PersonRepository;
-import com.pibox.knwh.service.PersonService;
+import com.pibox.knwh.exception.UserNotFoundException;
+import com.pibox.knwh.repository.UserRepository;
+import com.pibox.knwh.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,30 +12,30 @@ import java.util.List;
 
 @AllArgsConstructor
 @Service
-public class PersonServiceImpl implements PersonService {
+class UserServiceImpl implements UserService {
 
-    private final PersonRepository personRepository;
+    private final UserRepository userRepository;
 
-    public List<User> getAllPeople() {
-        return personRepository.findAll();
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
-    public void addPerson(User user) {
-        Boolean existsEmail = personRepository.selectExistsEmail(user.getEmail());
+    public void addUser(User user) {
+        Boolean existsEmail = userRepository.selectExistsEmail(user.getEmail());
         if (existsEmail) {
             throw new BadRequestException(
                     "Email " + user.getEmail() + " taken"
             );
         }
-        personRepository.save(user);
+        userRepository.save(user);
     }
 
-    public void deletePerson(Long personId) {
-        if (!personRepository.existsById(personId)) {
-            throw new PersonNotFoundException(
-                    "Person with id " + personId + " does not exists"
+    public void deleteUser(Long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new UserNotFoundException(
+                    "User with id " + userId + " does not exists"
             );
         }
-        personRepository.deleteById(personId);
+        userRepository.deleteById(userId);
     }
 }

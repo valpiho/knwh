@@ -20,12 +20,15 @@ import java.util.Set;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "wh_users")
+@Entity
+@Table(name = "wh_users", uniqueConstraints = {
+        @UniqueConstraint(name = "unique_user_email", columnNames = "email")
+})
 public class User {
 
     @Id
-    @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
-    @GeneratedValue(generator = "user_sequence", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1)
+    @GeneratedValue(generator = "user_seq", strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @NotEmpty
@@ -37,11 +40,15 @@ public class User {
     private String lastName;
 
     @NotEmpty
+    @Temporal(TemporalType.DATE)
+    private Date birthDate;
+
+    @NotEmpty
     @Column(nullable = false)
     private String phoneNumber;
 
     @Email
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String email;
 
     @NotNull
@@ -71,8 +78,8 @@ public class User {
     @Column(nullable = false)
     private Gender gender;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "company_id")
+    @ManyToOne
+    @JoinColumn(name = "company_id", foreignKey = @ForeignKey(name = "fk_user_company"))
     private Company company;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
