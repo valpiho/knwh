@@ -1,16 +1,32 @@
 package com.pibox.knwh.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import java.util.Set;
+import com.pibox.knwh.enumeration.Status;
+import lombok.*;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.List;
+
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Table(name = "wh_tasks")
 public class Task {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToMany(mappedBy = "tasks")
-    private Set<User> users;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Status status;
+
+    @ManyToMany(mappedBy = "tasks", fetch = FetchType.LAZY)
+    private List<User> users;
 }

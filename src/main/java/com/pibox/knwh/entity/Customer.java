@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -17,8 +18,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "wh_warehouses")
-public class Warehouse {
+@Table(name = "wh_customers", uniqueConstraints = {
+        @UniqueConstraint(name = "unique_customer_email", columnNames = "email"),
+        @UniqueConstraint(name = "unique_customer_vat_number", columnNames = "vat_number")
+})
+public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,6 +32,18 @@ public class Warehouse {
     @Column(nullable = false)
     private String title;
 
+    @NotEmpty
+    @Column(nullable = false)
+    private String phoneNumber;
+
+    @Email
+    @Column(nullable = false)
+    private String email;
+
+    @NotNull
+    @Column(name = "vat_number", nullable = false)
+    private String vatNumber;
+
     @NotNull
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date createdAt;
@@ -36,11 +52,11 @@ public class Warehouse {
     private Date updatedAt;
 
     @DateTimeFormat(pattern = "dd/MM/yyyy")
-    private Date deprecatedAt;
+    private Date archivedAt;
 
     @JsonProperty
     private boolean isActive;
 
-    @OneToMany(mappedBy = "warehouse")
-    private List<Storage> storageList;
+    @OneToMany(mappedBy = "customer")
+    private List<Order> orders;
 }

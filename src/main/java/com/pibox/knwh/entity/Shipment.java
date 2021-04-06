@@ -6,9 +6,11 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.Map;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,14 +19,35 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "wh_orders")
-public class Order {
+@Table(name = "wh_shipments")
+public class Shipment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotEmpty
+    @Column(nullable = false)
+    private String country;
+
+    @NotEmpty
+    @Column(nullable = false)
+    private String city;
+
+    @NotEmpty
+    @Column(nullable = false)
+    private String address;
+
+    @NotEmpty
+    @Column(nullable = false)
+    private String zipCode;
+
+    @NotEmpty
+    @Column(nullable = false)
     private String phoneNumber;
+
+    @Email
+    @Column(nullable = false)
     private String email;
 
     @NotNull
@@ -50,27 +73,14 @@ public class Order {
     private User createdBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
     private Customer customer;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "shipment_id")
-    private Shipment shipment;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "vendor_id")
     private Vendor vendor;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "task_id")
     private Task task;
 
-    @ElementCollection
-    @CollectionTable(
-            name = "wh_order_items",
-            joinColumns = {@JoinColumn(name = "order_id", referencedColumnName = "id")}
-    )
-    @MapKeyColumn(name = "item_id")
-    @Column(name = "quantity")
-    private Map<Item, Integer> itemsQuantityMap;
+    @OneToMany(mappedBy = "shipment")
+    private List<Order> orders;
 }

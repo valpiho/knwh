@@ -17,8 +17,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "wh_warehouses")
-public class Warehouse {
+@Table(name = "wh_items")
+public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,6 +27,14 @@ public class Warehouse {
     @NotEmpty
     @Column(nullable = false)
     private String title;
+
+    @NotEmpty
+    @Column(nullable = false)
+    private String description;
+
+    @NotEmpty
+    @Column(nullable = false)
+    private String SKU;
 
     @NotNull
     @DateTimeFormat(pattern = "dd/MM/yyyy")
@@ -41,6 +49,12 @@ public class Warehouse {
     @JsonProperty
     private boolean isActive;
 
-    @OneToMany(mappedBy = "warehouse")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ItemCategory itemCategory;
+
+    @ManyToMany
     private List<Storage> storageList;
+
+    @ManyToMany
+    private List<Order> orders;
 }

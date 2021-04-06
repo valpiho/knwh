@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/users")
+@CrossOrigin("*")
 public class UserController {
 
     private final UserService userService;

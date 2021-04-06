@@ -12,7 +12,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -27,8 +26,7 @@ import java.util.Set;
 public class User {
 
     @Id
-    @SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1)
-    @GeneratedValue(generator = "user_seq", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotEmpty
@@ -78,22 +76,15 @@ public class User {
     @Column(nullable = false)
     private Gender gender;
 
-    @ManyToOne
-    @JoinColumn(name = "company_id", foreignKey = @ForeignKey(name = "fk_user_company"))
-    private Company company;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "createdBy")
     private List<Order> orders;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "users_tasks",
+    @OneToMany(mappedBy = "createdBy")
+    private List<Shipment> shipments;
+
+    @ManyToMany
+    @JoinTable(name = "wh_users_tasks",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "task_id", referencedColumnName = "id"))
     private List<Task> tasks;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "users_warehouses",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "warehouse_id", referencedColumnName = "id"))
-    private Set<Warehouse> warehouses;
 }

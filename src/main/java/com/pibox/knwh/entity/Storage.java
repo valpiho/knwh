@@ -8,7 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -17,8 +17,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "wh_warehouses")
-public class Warehouse {
+@Table(name = "wh_storage")
+public class Storage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,6 +41,16 @@ public class Warehouse {
     @JsonProperty
     private boolean isActive;
 
-    @OneToMany(mappedBy = "warehouse")
-    private List<Storage> storageList;
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Warehouse warehouse;
+
+    @ElementCollection
+    @CollectionTable(
+            name = "wh_storage_items",
+            joinColumns = {@JoinColumn(name = "storage_id", referencedColumnName = "id")}
+            )
+    @MapKeyColumn(name = "item_id")
+    @Column(name = "quantity")
+    private Map<Item, Integer> itemsQuantityMap;
 }
