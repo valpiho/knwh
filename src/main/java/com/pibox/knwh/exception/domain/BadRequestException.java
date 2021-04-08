@@ -1,4 +1,4 @@
-package com.pibox.knwh.exception;
+package com.pibox.knwh.exception.domain;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

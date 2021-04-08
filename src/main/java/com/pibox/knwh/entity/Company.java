@@ -6,7 +6,6 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
@@ -17,7 +16,11 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "wh_company")
+@Table(name = "wh_company", uniqueConstraints = {
+        @UniqueConstraint(name = "unique_company_title", columnNames = "title"),
+        @UniqueConstraint(name = "unique_company_email", columnNames = "email"),
+        @UniqueConstraint(name = "unique_company_vat_number", columnNames = "vat_number")
+})
 public class Company {
 
     @Id
@@ -49,26 +52,15 @@ public class Company {
 
     @NotBlank(message = "VAT number is required")
     @Size(min = 8, max = 15, message = "Please use 8 to 15 characters")
+    @Column(name = "vat_number")
     private String vatNumber;
 
-    @NotNull
     @JsonFormat(pattern = "dd/MM/yyyy")
     private Date createdAt;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     private Date updatedAt;
 
-    public Company(@NotBlank String title, @NotBlank String country, @NotBlank String city, @NotBlank String address,
-                   @NotBlank String zipCode, @NotBlank String phoneNumber, @Email String email, @NotBlank String vatNumber) {
-        this.title = title;
-        this.country = country;
-        this.city = city;
-        this.address = address;
-        this.zipCode = zipCode;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.vatNumber = vatNumber;
-    }
 
     @PrePersist
     protected void onCreate() {
