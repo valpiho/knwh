@@ -1,12 +1,12 @@
 package com.pibox.knwh.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Getter
@@ -16,49 +16,59 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "wh_company")
+@Table(name = "wh_company", uniqueConstraints = {
+        @UniqueConstraint(name = "unique_company_title", columnNames = "title"),
+        @UniqueConstraint(name = "unique_company_email", columnNames = "email"),
+        @UniqueConstraint(name = "unique_company_vat_number", columnNames = "vat_number")
+})
 public class Company {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotEmpty
-    @Column(nullable = false)
+    @NotBlank(message = "Company name is required")
     private String title;
 
-    @NotEmpty
-    @Column(nullable = false)
+    @NotBlank(message = "Country name is required")
     private String country;
 
-    @NotEmpty
-    @Column(nullable = false)
+    @NotBlank(message = "City name is required")
     private String city;
 
-    @NotEmpty
-    @Column(nullable = false)
+    @NotBlank(message = "Address is required")
     private String address;
 
-    @NotEmpty
-    @Column(nullable = false)
+    @NotBlank(message = "Zip Code is required")
+    @Size(min = 5, max = 8, message = "Please use 5 to 8 characters")
     private String zipCode;
 
-    @NotEmpty
-    @Column(nullable = false)
+    @NotBlank(message = "Phone number is required")
+    @Size(min = 8, max = 15, message = "Please use 8 to 15 numbers")
     private String phoneNumber;
 
     @Email
-    @Column(nullable = false)
     private String email;
 
-    @NotEmpty
-    @Column(nullable = false)
+    @NotBlank(message = "VAT number is required")
+    @Size(min = 8, max = 15, message = "Please use 8 to 15 characters")
+    @Column(name = "vat_number")
     private String vatNumber;
 
-    @NotNull
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date createdAt;
 
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private Date updatedAt;
+
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = new Date();
+    }
 }

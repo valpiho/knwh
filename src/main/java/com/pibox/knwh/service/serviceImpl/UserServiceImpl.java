@@ -1,8 +1,8 @@
 package com.pibox.knwh.service.serviceImpl;
 
 import com.pibox.knwh.entity.User;
-import com.pibox.knwh.exception.BadRequestException;
-import com.pibox.knwh.exception.UserNotFoundException;
+import com.pibox.knwh.exception.domain.BadRequestException;
+import com.pibox.knwh.exception.domain.UserNotFoundException;
 import com.pibox.knwh.repository.UserRepository;
 import com.pibox.knwh.service.UserService;
 import lombok.AllArgsConstructor;
