@@ -4,22 +4,26 @@ import Dashboard from "./components/Dashboard";
 import Sidebar from "./components/Layout/Sidebar";
 import Header from "./components/Layout/Header";
 
+import { BrowserRouter as Router, Route} from "react-router-dom";
+import AddWarehouse from "./components/Company/AddWarehouse";
+
 function App() {
 
     return (
-        <div>
+        <Router>
             <Header />
             <div className="container-fluid">
-                <div className="row">
+                <div className="row mr-1">
                     <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
                         <Sidebar />
                     </nav>
                     <div className="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                        <Dashboard />
+                        <Route exact path="/" component={Dashboard}/>
+                        <Route exact path="/addProject" component={AddWarehouse}/>
                     </div>
                 </div>
             </div>
-        </div>
+        </Router>
     )
 }
 
