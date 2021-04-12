@@ -27,6 +27,8 @@ public class Warehouse {
     @NotEmpty
     @Column(nullable = false)
     private String title;
+    private String description;
+    private int storageQuantity;
 
     @NotNull
     @DateTimeFormat(pattern = "dd/MM/yyyy")
