@@ -19,7 +19,8 @@ public class CompanyController {
     private final CompanyService companyService;
     private final MapValidationErrorService mapValidationErrorService;
 
-    public CompanyController(CompanyService companyService, MapValidationErrorService mapValidationErrorService) {
+    public CompanyController(CompanyService companyService,
+                             MapValidationErrorService mapValidationErrorService) {
         this.companyService = companyService;
         this.mapValidationErrorService = mapValidationErrorService;
     }

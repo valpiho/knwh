@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from "react-router-dom";
 
 class Sidebar extends Component {
     render() {
@@ -6,37 +7,37 @@ class Sidebar extends Component {
             <div className="sidebar-sticky pt-3">
                 <ul className="nav flex-column">
                     <li className="nav-item">
-                        <a className="nav-link active" href="#">Dashboard <span className="sr-only">(current)</span></a>
+                        <Link to="/" className="nav-link active">Dashboard <span className="sr-only">(current)</span></Link>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="#">Orders</a>
+                        <Link to="#" className="nav-link">Orders</Link>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="#">Shipments</a>
-                    </li>
-                </ul>
-                <hr/>
-                <ul className="nav flex-column">
-                    <li className="nav-item">
-                        <a className="nav-link" href="#">Tasks</a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="#">Products</a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="#">Warehouses</a>
+                        <Link to="#" className="nav-link">Shipments</Link>
                     </li>
                 </ul>
                 <hr/>
                 <ul className="nav flex-column">
                     <li className="nav-item">
-                        <a className="nav-link" href="#">Customers</a>
+                        <Link to="#" className="nav-link">Tasks</Link>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="#">Vendors</a>
+                        <Link to="#" className="nav-link">Products</Link>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="#">Personnel</a>
+                        <Link to="#" className="nav-link">Warehouses</Link>
+                    </li>
+                </ul>
+                <hr/>
+                <ul className="nav flex-column">
+                    <li className="nav-item">
+                        <Link to="#" className="nav-link">Customers</Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link to="#" className="nav-link">Vendors</Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link to="#" className="nav-link">Personnel</Link>
                     </li>
                 </ul>
             </div>
