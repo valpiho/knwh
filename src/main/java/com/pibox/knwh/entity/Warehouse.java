@@ -1,5 +1,6 @@
 package com.pibox.knwh.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -27,10 +28,13 @@ public class Warehouse {
     @NotEmpty
     @Column(nullable = false)
     private String title;
-    private String description;
-    private int storageQuantity;
 
-    @NotNull
+    private String description;
+
+    @NotEmpty
+    @Column(nullable = false)
+    private String storageQuantity;
+
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date createdAt;
 
@@ -43,6 +47,17 @@ public class Warehouse {
     @JsonProperty
     private boolean isActive;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @OneToMany(mappedBy = "warehouse")
     private List<Storage> storageList;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = new Date();
+    }
 }

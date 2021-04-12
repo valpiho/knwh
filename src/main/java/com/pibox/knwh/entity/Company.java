@@ -61,7 +61,6 @@ public class Company {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private Date updatedAt;
 
-
     @PrePersist
     protected void onCreate() {
         this.createdAt = new Date();
