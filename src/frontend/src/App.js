@@ -6,24 +6,28 @@ import Header from "./components/Layout/Header";
 
 import { BrowserRouter as Router, Route} from "react-router-dom";
 import AddWarehouse from "./components/Company/AddWarehouse";
+import { Provider } from "react-redux";
+import store from "./store";
 
 function App() {
 
     return (
-        <Router>
-            <Header />
-            <div className="container-fluid">
-                <div className="row mr-1">
-                    <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-                        <Sidebar />
-                    </nav>
-                    <div className="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-                        <Route exact path="/" component={Dashboard}/>
-                        <Route exact path="/addProject" component={AddWarehouse}/>
+        <Provider store={store}>
+            <Router>
+                <Header />
+                <div className="container-fluid">
+                    <div className="row mr-1">
+                        <nav id="sidebarMenu" className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                            <Sidebar />
+                        </nav>
+                        <div className="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                            <Route exact path="/" component={Dashboard}/>
+                            <Route exact path="/addProject" component={AddWarehouse}/>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </Router>
+            </Router>
+        </Provider>
     )
 }
 
