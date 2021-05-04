@@ -1,14 +1,19 @@
 package com.pibox.knwh.service;
 
+import com.pibox.knwh.entity.DTO.UserDTO;
 import com.pibox.knwh.entity.User;
 
 import java.util.List;
 
 public interface UserService {
 
-    List<User> getAllUsers();
+    UserDTO getUserById(Long id);
 
-    void addUser(User user);
+    List<UserDTO> getAllUsers();
 
-    void deleteUser(Long personId);
+    void addUser(UserDTO userDTO);
+
+    UserDTO updateUser(Long id, UserDTO userDTO);
+
+    void deleteUser(Long id);
 }

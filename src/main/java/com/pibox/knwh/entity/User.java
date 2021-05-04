@@ -1,15 +1,12 @@
 package com.pibox.knwh.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.pibox.knwh.enumeration.Gender;
 import com.pibox.knwh.enumeration.Role;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -29,30 +26,20 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotEmpty
     @Column(nullable = false)
     private String firstName;
 
-    @NotEmpty
     @Column(nullable = false)
     private String lastName;
 
-    @NotEmpty
     @Temporal(TemporalType.DATE)
     private Date birthDate;
 
-    @NotEmpty
     @Column(nullable = false)
     private String phoneNumber;
 
-    @Email
     @Column(nullable = false)
     private String email;
-
-    @NotNull
-    @Column(nullable = false)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String password;
 
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date createdAt;
@@ -63,15 +50,10 @@ public class User {
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date archivedAt;
 
-    @JsonProperty
-    private boolean isActive;
-
-    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Gender gender;

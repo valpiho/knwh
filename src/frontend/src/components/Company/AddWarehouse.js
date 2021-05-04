@@ -1,4 +1,7 @@
 import React, {Component} from 'react';
+import PropTypes from "prop-types";
+import { connect} from "react-redux";
+import { createWarehouse } from "../../actions/WarehouseActions";
 
 class AddWarehouse extends Component {
     constructor() {
@@ -6,7 +9,8 @@ class AddWarehouse extends Component {
         this.state = {
             "title": "",
             "description": "",
-            "storageQuantity": ""
+            "storageQuantity": "",
+            "isActive": false
         }
     }
 
@@ -19,9 +23,10 @@ class AddWarehouse extends Component {
         const newWarehouse = {
             "title": this.state.title,
             "description": this.state.description,
-            "storageQuantity": this.state.storageQuantity
-        }
-        console.log(newWarehouse)
+            "storageQuantity": this.state.storageQuantity,
+            "isActive": true
+        };
+        this.props.createWarehouse(newWarehouse, this.props.history);
     }
 
     render() {
@@ -75,5 +80,8 @@ class AddWarehouse extends Component {
         );
     }
 }
+AddWarehouse.propTypes = {
+    createWarehouse: PropTypes.func.isRequired
+};
 
-export default AddWarehouse;
+export default connect(null, {createWarehouse})(AddWarehouse);

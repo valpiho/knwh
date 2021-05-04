@@ -6,7 +6,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "wh_warehouses")
+@Table(name = "wh_warehouses", uniqueConstraints = {
+        @UniqueConstraint(name = "unique_warehouse_title", columnNames = "title")})
 public class Warehouse {
 
     @Id
@@ -27,10 +27,13 @@ public class Warehouse {
     @NotEmpty
     @Column(nullable = false)
     private String title;
-    private String description;
-    private int storageQuantity;
 
-    @NotNull
+    private String description;
+
+    @NotEmpty
+    @Column(nullable = false)
+    private String storageQuantity;
+
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date createdAt;
 
@@ -43,6 +46,17 @@ public class Warehouse {
     @JsonProperty
     private boolean isActive;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @OneToMany(mappedBy = "warehouse")
     private List<Storage> storageList;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = new Date();
+    }
 }

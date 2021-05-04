@@ -13,7 +13,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/warehouse")
+@RequestMapping("/api/warehouse")
+@CrossOrigin
 public class WarehouseController {
 
     private final WarehouseService warehouseService;
@@ -25,7 +26,7 @@ public class WarehouseController {
         this.mapValidationErrorService = mapValidationErrorService;
     }
 
-    @PostMapping
+    @PostMapping("")
     public ResponseEntity<?> createOrUpdateWarehouse(@Valid @RequestBody Warehouse warehouse, BindingResult result) {
         ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
         if (errorMap != null) {
