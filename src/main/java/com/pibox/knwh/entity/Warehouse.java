@@ -1,13 +1,11 @@
 package com.pibox.knwh.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "wh_warehouses")
+@Table(name = "wh_warehouses", uniqueConstraints = {
+        @UniqueConstraint(name = "unique_warehouse_title", columnNames = "title")})
 public class Warehouse {
 
     @Id
