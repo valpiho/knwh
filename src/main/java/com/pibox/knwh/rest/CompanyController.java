@@ -1,6 +1,7 @@
 package com.pibox.knwh.rest;
 
-import com.pibox.knwh.entity.Company;
+import com.pibox.knwh.entity.DTO.CompanyDTO;
+import com.pibox.knwh.entity.HttpResponse;
 import com.pibox.knwh.service.CompanyService;
 import com.pibox.knwh.utils.MapValidationErrorService;
 import javassist.NotFoundException;
@@ -25,30 +26,34 @@ public class CompanyController {
         this.mapValidationErrorService = mapValidationErrorService;
     }
 
-    @PostMapping
-    public ResponseEntity<?> createOrUpdateCompany(@Valid @RequestBody Company company, BindingResult result) {
+    @PostMapping("/create")
+    public ResponseEntity<?> createOrUpdateCompany(@Valid @RequestBody CompanyDTO companyDTO, BindingResult result) {
         ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
         if (errorMap != null) {
             return errorMap;
         }
-        Company newCompany = companyService.createOrUpdateCompany(company);
-        return new ResponseEntity<>(newCompany, HttpStatus.CREATED);
+        companyService.createCompany(companyDTO);
+        return response(HttpStatus.OK, "Company has been created");
     }
 
-    @GetMapping("/{companyId}")
-    public ResponseEntity<?> getCompanyById(@PathVariable Long companyId) throws NotFoundException {
-        Company company = companyService.findCompanyById(companyId);
-        return new ResponseEntity<>(company, HttpStatus.OK);
+    @GetMapping("/{id}")
+    public ResponseEntity<CompanyDTO> getCompanyById(@PathVariable("id") Long id) {
+        CompanyDTO companyDTO = companyService.findCompanyById(id);
+        return new ResponseEntity<>(companyDTO, HttpStatus.OK);
     }
 
-    @GetMapping("/list")
-    public List<Company> getAllCompanies() {
+    @GetMapping
+    public List<CompanyDTO> getAllCompanies() {
         return companyService.findAllCompanies();
     }
 
-    @DeleteMapping("/{companyId}")
-    public ResponseEntity<?> deleteCompanyById(@PathVariable Long companyId) throws NotFoundException {
-        companyService.deleteCompanyById(companyId);
-        return new ResponseEntity<>("Company with ID '" + companyId + "' was deleted successfully.", HttpStatus.OK);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCompanyById(@PathVariable Long id) throws NotFoundException {
+        companyService.deleteCompanyById(id);
+        return response(HttpStatus.OK, "Company with ID '" + id + "' was deleted successfully.");
+    }
+
+    private ResponseEntity<HttpResponse> response(HttpStatus httpStatus, String message) {
+        return new ResponseEntity<>(new HttpResponse(httpStatus.value(), httpStatus, message), httpStatus);
     }
 }

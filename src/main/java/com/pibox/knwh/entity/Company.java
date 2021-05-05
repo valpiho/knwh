@@ -1,13 +1,11 @@
 package com.pibox.knwh.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,42 +22,28 @@ import java.util.Date;
 public class Company {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Company name is required")
     private String title;
-
-    @NotBlank(message = "Country name is required")
     private String country;
-
-    @NotBlank(message = "City name is required")
     private String city;
-
-    @NotBlank(message = "Address is required")
     private String address;
-
-    @NotBlank(message = "Zip Code is required")
-    @Size(min = 5, max = 8, message = "Please use 5 to 8 characters")
     private String zipCode;
-
-    @NotBlank(message = "Phone number is required")
-    @Size(min = 8, max = 15, message = "Please use 8 to 15 numbers")
     private String phoneNumber;
-
-    @Email
     private String email;
 
-    @NotBlank(message = "VAT number is required")
-    @Size(min = 8, max = 15, message = "Please use 8 to 15 characters")
     @Column(name = "vat_number")
     private String vatNumber;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date createdAt;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date updatedAt;
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Warehouse> warehouseList;
 
     @PrePersist
     protected void onCreate() {

@@ -1,11 +1,10 @@
 package com.pibox.knwh.exception;
 
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.pibox.knwh.entity.HttpResponse;
 import com.pibox.knwh.exception.domain.BadRequestException;
 import com.pibox.knwh.exception.domain.UniqueFieldExistException;
 import com.pibox.knwh.exception.domain.UniqueFieldExistExceptionResponse;
-import com.pibox.knwh.exception.domain.UserNotFoundException;
+import com.pibox.knwh.exception.domain.NotFoundException;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +22,8 @@ public class ExceptionHandling implements ErrorController {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<HttpResponse> userNotFoundException(UserNotFoundException exception) {
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<HttpResponse> userNotFoundException(NotFoundException exception) {
         return createHttpResponse(HttpStatus.NOT_FOUND, exception.getMessage());
     }
 

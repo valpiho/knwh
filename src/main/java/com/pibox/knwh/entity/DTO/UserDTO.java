@@ -7,9 +7,7 @@ import com.pibox.knwh.enumeration.Role;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.util.Date;
 
 @Getter
@@ -19,25 +17,29 @@ public class UserDTO {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
-    @NotEmpty
+    @NotBlank(message = "First name is required")
+    @Pattern(regexp = "^[a-zA-Z]{1,20}$", message = "Only up to 20 letters allowed")
     private String firstName;
 
-    @NotEmpty
+    @NotBlank(message = "Last name is required")
+    @Pattern(regexp = "^[a-zA-Z]{1,20}$", message = "Only up to 20 letters allowed")
     private String lastName;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    @NotNull(message = "Birth date is required")
     private Date birthDate;
 
-    @NotEmpty
+    @NotBlank(message = "Company name is required")
+    @Pattern(regexp = "^[0-9]{6,10}$", message = "Only 6 to 10 numbers allowed")
     private String phoneNumber;
 
-    @Email
-    @NotEmpty
+    @Email(message = "Please enter valid Email")
+    @NotEmpty(message = "Email is required")
     private String email;
 
-    @NotNull
+    @NotNull(message = "Please use only allowed role")
     private Role role;
 
-    @NotNull
+    @NotNull(message = "Please use only allowed gender")
     private Gender gender;
 }
