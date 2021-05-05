@@ -3,10 +3,9 @@ package com.pibox.knwh.service.serviceImpl;
 import com.pibox.knwh.entity.DTO.UserDTO;
 import com.pibox.knwh.entity.User;
 import com.pibox.knwh.exception.domain.BadRequestException;
-import com.pibox.knwh.exception.domain.UserNotFoundException;
+import com.pibox.knwh.exception.domain.NotFoundException;
 import com.pibox.knwh.repository.UserRepository;
 import com.pibox.knwh.service.UserService;
-import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +31,7 @@ class UserServiceImpl implements UserService {
         return modelMapper.map(userRepository.findUserById(id), UserDTO.class);
     }
 
+    @Override
     public List<UserDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream()
@@ -39,6 +39,7 @@ class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public void addUser(UserDTO userDTO) {
         checkIfEmailExists(userDTO);
         User user = modelMapper.map(userDTO, User.class);
@@ -54,11 +55,12 @@ class UserServiceImpl implements UserService {
         User user = userRepository.findUserById(id);
         modelMapper.typeMap(UserDTO.class, User.class).addMappings(mapper -> mapper.skip(User::setId));
         modelMapper.map(userDTO, user);
-        user.setUpdatedAt(new Date());
+        user.setActive(true);
         userRepository.save(user);
         return modelMapper.map(user, UserDTO.class);
     }
 
+    @Override
     public void deleteUser(Long id) {
         checkIfExistsById(id);
         userRepository.deleteById(id);
@@ -66,7 +68,7 @@ class UserServiceImpl implements UserService {
 
     private void checkIfExistsById(Long id) {
         if (!userRepository.existsById(id)) {
-            throw new UserNotFoundException(
+            throw new NotFoundException(
                     "User with ID: " + id + " is not found"
             );
         }

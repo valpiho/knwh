@@ -1,6 +1,6 @@
 package com.pibox.knwh.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pibox.knwh.enumeration.Gender;
 import com.pibox.knwh.enumeration.Role;
 import lombok.*;
@@ -23,7 +23,7 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -32,7 +32,7 @@ public class User {
     @Column(nullable = false)
     private String lastName;
 
-    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date birthDate;
 
     @Column(nullable = false)
@@ -49,6 +49,9 @@ public class User {
 
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date archivedAt;
+
+    @JsonProperty
+    private boolean isActive;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -69,4 +72,14 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "task_id", referencedColumnName = "id"))
     private List<Task> tasks;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = new Date();
+    }
 }
