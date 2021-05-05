@@ -21,7 +21,7 @@ import java.util.List;
 public class Warehouse {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotEmpty
@@ -45,6 +45,11 @@ public class Warehouse {
 
     @JsonProperty
     private boolean isActive;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id", referencedColumnName = "id",
+            nullable = false, updatable = false)
+    private Company company;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @OneToMany(mappedBy = "warehouse")
