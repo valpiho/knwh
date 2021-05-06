@@ -8,7 +8,6 @@ import com.pibox.knwh.repository.CompanyRepository;
 import com.pibox.knwh.repository.UserRepository;
 import com.pibox.knwh.service.UserService;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -31,7 +30,7 @@ class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserById(Long id) {
-        checkIfExistsById(id);
+        checkIfUserExistsById(id);
         return modelMapper.map(userRepository.findUserById(id), UserDTO.class);
     }
 
@@ -53,19 +52,30 @@ class UserServiceImpl implements UserService {
 
     @Override
     public void addUser(UserDTO userDTO) {
-        checkIfEmailExists(userDTO);
+        checkIfEmailExists(userDTO.getEmail());
         User user = modelMapper.map(userDTO, User.class);
+        checkIfCompanyExists(user.getCompany().getId());
         user.setCreatedAt(new Date());
         userRepository.save(user);
     }
 
+    private void checkIfCompanyExists(Long id) {
+        if (!companyRepository.existsById(id)) {
+            throw new NotFoundException(
+                    "Company with ID: '" + id + "' is not found"
+            );
+        }
+    }
+
     @Override
     public UserDTO updateUser(Long id, UserDTO userDTO) {
+        checkIfUserExistsById(id);
         if (!userDTO.getEmail().equals(userRepository.findUserById(id).getEmail())) {
-            checkIfEmailExists(userDTO);
+            checkIfEmailExists(userDTO.getEmail());
         }
         User user = userRepository.findUserById(id);
         modelMapper.typeMap(UserDTO.class, User.class).addMappings(mapper -> mapper.skip(User::setId));
+        modelMapper.typeMap(UserDTO.class, User.class).addMappings(mapper -> mapper.skip(User::setCompany));
         modelMapper.map(userDTO, user);
         user.setActive(true);
         userRepository.save(user);
@@ -74,11 +84,11 @@ class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long id) {
-        checkIfExistsById(id);
+        checkIfUserExistsById(id);
         userRepository.deleteById(id);
     }
 
-    private void checkIfExistsById(Long id) {
+    private void checkIfUserExistsById(Long id) {
         if (!userRepository.existsById(id)) {
             throw new NotFoundException(
                     "User with ID: " + id + " is not found"
@@ -86,10 +96,10 @@ class UserServiceImpl implements UserService {
         }
     }
 
-    private void checkIfEmailExists(UserDTO userDTO) {
-        if (userRepository.selectExistsEmail(userDTO.getEmail())) {
+    private void checkIfEmailExists(String email) {
+        if (userRepository.selectExistsEmail(email)) {
             throw new BadRequestException(
-                    "Email " + userDTO.getEmail() + " taken"
+                    "Email " + email + " taken"
             );
         }
     }
