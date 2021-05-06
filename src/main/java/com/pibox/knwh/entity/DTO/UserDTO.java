@@ -2,6 +2,7 @@ package com.pibox.knwh.entity.DTO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.pibox.knwh.entity.Company;
 import com.pibox.knwh.enumeration.Gender;
 import com.pibox.knwh.enumeration.Role;
 import lombok.Getter;
@@ -42,4 +43,7 @@ public class UserDTO {
 
     @NotNull(message = "Please use only allowed gender")
     private Gender gender;
+
+    @Pattern(regexp = "^[0-9]{1,10}$", message = "Only numbers allowed")
+    private String companyId;
 }

@@ -2,12 +2,11 @@ package com.pibox.knwh.service.serviceImpl;
 
 import com.pibox.knwh.entity.Company;
 import com.pibox.knwh.entity.DTO.CompanyDTO;
+import com.pibox.knwh.exception.domain.BadRequestException;
 import com.pibox.knwh.exception.domain.NotFoundException;
-import com.pibox.knwh.exception.domain.UniqueFieldExistException;
 import com.pibox.knwh.repository.CompanyRepository;
 import com.pibox.knwh.service.CompanyService;
 import org.modelmapper.ModelMapper;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,22 +26,13 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public void createCompany(CompanyDTO companyDTO) {
+        checkIfTitleExists(companyDTO.getTitle());
+        checkIfEmailExists(companyDTO.getEmail());
+        checkIfVatNumberExists(companyDTO.getVatNumber());
+
         Company company = modelMapper.map(companyDTO, Company.class);
         company.setVatNumber(company.getVatNumber().toUpperCase());
-        try {
-            companyRepository.save(company);
-        } catch (DataIntegrityViolationException exception) {
-            if (companyRepository.findCompanyByTitle(company.getTitle()) != null) {
-                throw new UniqueFieldExistException("Company title '" + company.getTitle() + "' already exists");
-            }
-            if (companyRepository.findCompanyByEmail(company.getEmail()) != null) {
-                throw new UniqueFieldExistException("Company email '" + company.getEmail() + "' already exists");
-            }
-            if (companyRepository.findCompanyByVatNumber(company.getVatNumber()) != null) {
-                throw new UniqueFieldExistException("Company VAT Number '" + company.getVatNumber() + "' already exists");
-            }
-            throw exception;
-        }
+        companyRepository.save(company);
     }
 
     @Override
@@ -60,7 +50,27 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public void deleteCompanyById(Long id) throws NotFoundException {
+    public CompanyDTO updateCompany(Long id, CompanyDTO companyDTO) {
+        checkIfCompanyExists(id);
+        if (!companyDTO.getTitle().equals(companyRepository.findCompanyById(id).getTitle())) {
+            checkIfTitleExists(companyDTO.getTitle());
+        }
+        if (!companyDTO.getEmail().equals(companyRepository.findCompanyById(id).getEmail())) {
+            checkIfEmailExists(companyDTO.getEmail());
+        }
+        if (!companyDTO.getVatNumber().equals(companyRepository.findCompanyById(id).getVatNumber())) {
+            checkIfVatNumberExists(companyDTO.getVatNumber());
+        }
+
+        Company company = companyRepository.findCompanyById(id);
+        modelMapper.typeMap(CompanyDTO.class, Company.class).addMappings(mapper -> mapper.skip(Company::setId));
+        modelMapper.map(companyDTO, company);
+        companyRepository.save(company);
+        return modelMapper.map(company, CompanyDTO.class);
+    }
+
+    @Override
+    public void deleteCompanyById(Long id) {
         checkIfCompanyExists(id);
         companyRepository.delete(companyRepository.findCompanyById(id));
     }
@@ -68,7 +78,31 @@ public class CompanyServiceImpl implements CompanyService {
     private void checkIfCompanyExists(Long id) {
         if (!companyRepository.existsById(id)) {
             throw new NotFoundException(
-                    "Company with ID '" + id + "' is not found"
+                    "Company with ID: '" + id + "' is not found"
+            );
+        }
+    }
+
+    private void checkIfTitleExists(String title) {
+        if (companyRepository.existsByTitle(title)) {
+            throw new BadRequestException(
+                    "Title: '" + title + "' already taken for other company"
+            );
+        }
+    }
+
+    private void checkIfEmailExists(String email) {
+        if (companyRepository.existsByEmail(email)) {
+            throw new BadRequestException(
+                    "Email: '" + email + "' already taken for other company"
+            );
+        }
+    }
+
+    private void checkIfVatNumberExists(String vatNumber) {
+        if (companyRepository.existsByVatNumber(vatNumber.toUpperCase())) {
+            throw new BadRequestException(
+                    "Vat Number: '" + vatNumber + "' already taken for other company"
             );
         }
     }

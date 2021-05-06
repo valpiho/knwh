@@ -13,8 +13,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "api/users")
-@CrossOrigin("*")
+@RequestMapping(path = "api/v1")
 public class UserController {
 
     private final UserService userService;
@@ -25,18 +24,21 @@ public class UserController {
         this.mapValidationErrorService = mapValidationErrorService;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/user/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Long id) {
-        UserDTO userDTO = userService.getUserById(id);
+        UserDTO userDTO = userService.getUserById( id);
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
     }
 
-    @GetMapping
-    public List<UserDTO> getAllUsers() {
-        return userService.getAllUsers();
+    @GetMapping("/users")
+    public List<UserDTO> getAllUsers(@RequestParam(value = "companyId", required = false) Long companyTitle) {
+        if (companyTitle == null) {
+            return userService.getAllUsers();
+        }
+        return userService.getAllUsers(companyTitle);
     }
 
-    @PostMapping("/add")
+    @PostMapping("/users/add")
     public ResponseEntity<?> addUser(@Valid @RequestBody UserDTO userDTO, BindingResult result) {
         ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
         if (errorMap != null) {
@@ -46,18 +48,18 @@ public class UserController {
         return response(HttpStatus.CREATED, "User has been added");
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/user/{id}")
     public ResponseEntity<?> updateUser(@PathVariable("id") Long id,
                                         @Valid @RequestBody UserDTO userDTO, BindingResult result) {
         ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
         if (errorMap != null) {
             return errorMap;
         }
-        UserDTO updatedUser = userService.updateUser(id, userDTO);
-        return response(HttpStatus.OK, "User has been updated");
+        return new ResponseEntity<>(userService.updateUser(id, userDTO), HttpStatus.OK);
+
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/user/{id}")
     public ResponseEntity<HttpResponse> deleteUser(@PathVariable ("id") Long id) {
         userService.deleteUser(id);
         return response(HttpStatus.OK, "User with ID: " + id + " has been deleted");
