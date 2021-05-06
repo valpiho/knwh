@@ -61,6 +61,10 @@ public class User {
     @Column(nullable = false)
     private Gender gender;
 
+    @ManyToOne
+    @JoinColumn(name = "company_id", referencedColumnName = "id")
+    private Company company;
+
     @OneToMany(mappedBy = "createdBy")
     private List<Order> orders;
 

@@ -42,6 +42,9 @@ public class Company {
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date updatedAt;
 
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<User> userList;
+
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Warehouse> warehouseList;
 

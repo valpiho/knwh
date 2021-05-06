@@ -4,9 +4,11 @@ import com.pibox.knwh.entity.DTO.UserDTO;
 import com.pibox.knwh.entity.User;
 import com.pibox.knwh.exception.domain.BadRequestException;
 import com.pibox.knwh.exception.domain.NotFoundException;
+import com.pibox.knwh.repository.CompanyRepository;
 import com.pibox.knwh.repository.UserRepository;
 import com.pibox.knwh.service.UserService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -17,11 +19,13 @@ import java.util.stream.Collectors;
 class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final CompanyRepository companyRepository;
     private final ModelMapper modelMapper;
 
     public UserServiceImpl(UserRepository userRepository,
-                           ModelMapper modelMapper) {
+                           CompanyRepository companyRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
+        this.companyRepository = companyRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -34,6 +38,14 @@ class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(user -> modelMapper.map(user, UserDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserDTO> getAllUsers(Long companyId) {
+        List<User> users = userRepository.findAllByCompanyId(companyId);
         return users.stream()
                 .map(user -> modelMapper.map(user, UserDTO.class))
                 .collect(Collectors.toList());
